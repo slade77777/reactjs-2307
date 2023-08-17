@@ -1,18 +1,18 @@
 import './App.css'
-import QuestionAndAnswer from "./components/QuestionAndAnswer.tsx";
 import {useState} from "react";
 
 function App() {
-  const [questionOpening, setQuestionOpening] = useState<string>('');
+  const [name, setName] = useState('')
+  const [isShowResult, setShowResult] = useState(false);
 
-  console.log(questionOpening);
   return (
     <div>
-      <QuestionAndAnswer question={'cau hoi 1'} answer={'dap an 1'} isOpen={questionOpening === 'cau hoi 1'} changeOpenQuestion={setQuestionOpening}/>
-      <QuestionAndAnswer question={'cau hoi 2'} answer={'dap an 2'} isOpen={questionOpening === 'cau hoi 2'} changeOpenQuestion={setQuestionOpening}/>
-      <QuestionAndAnswer question={'cau hoi 3'} answer={'dap an 3'} isOpen={questionOpening === 'cau hoi 3'} changeOpenQuestion={setQuestionOpening}/>
-      <QuestionAndAnswer question={'cau hoi 4'} answer={'dap an 4'} isOpen={questionOpening === 'cau hoi 4'} changeOpenQuestion={setQuestionOpening}/>
-      <QuestionAndAnswer question={'cau hoi 5'} answer={'dap an 5'} isOpen={questionOpening === 'cau hoi 5'} changeOpenQuestion={setQuestionOpening}/>
+      <label>Name: </label>
+      <input type='text' onChange={e => setName(e.target.value)} />
+      {name.length === 0 && <p>Please input name</p>}
+      {name.length > 10 && <p>Name is too long</p>}
+      <button onClick={() => setShowResult(true)}>Send</button>
+      {isShowResult && <p>Name inputted: {name}</p>}
     </div>
   )
 }
