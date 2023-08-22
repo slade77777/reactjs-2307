@@ -1,5 +1,13 @@
 import './App.css'
 import {useRef, useState} from "react";
+import { useForm } from "react-hook-form";
+import * as yup from "yup";
+import { yupResolver } from '@hookform/resolvers/yup';
+
+const schema = yup.object({
+  firstName: yup.string().required().email(),
+  lastName: yup.string().required(),
+})
 
 type UserType = {
   firstName: string
@@ -7,33 +15,37 @@ type UserType = {
 }
 
 const Form = ({addUser}: {addUser: (val: UserType) => void}) => {
-  const [firstName, setFirstName] = useState('');
-  const lastNameRef  = useRef(null);
+  const { register, handleSubmit, watch, formState: { errors } }
+    = useForm({
+    resolver: yupResolver(schema)
+  });
+
+  const onSubmit = (data: any) => {
+    addUser({firstName: data.firstName, lastName: data.lastName})
+  };
 
   return (
-    <div>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <div>
       <label>First Name: </label>
-      <input type='text' value={firstName} onChange={e => setFirstName(e.target.value)} />
+      <input type='text' {...register('firstName')}  />
+      {errors.firstName && <p>{errors.firstName.message}</p>}
       </div>
       <div>
       <label>Last Name: </label>
-      <input type='text' ref={lastNameRef} />
+      <input type='text' {...register('lastName')} />
+        {errors.lastName && <p>{errors.lastName.message}</p>}
       </div>
-      <button onClick={() => {
-        addUser({firstName, lastName: lastNameRef.current?.value});
-        setFirstName('');
-        lastNameRef.current.value = '';
-      }}>Send</button>
-    </div>
+      <button type="submit">Send</button>
+    </form>
     )
 }
 
 const Result = ({userList}: {userList: Array<UserType>}) => {
   return <div>
     {
-      userList.map((user, index) => <div>
-        <p>Firstname: {user.firstName} - LastName: {user.lastName}</p>
+      userList.map((user, index) => <div key={index}>
+        <p>Firstname: {user.firstName} - LastName: {user.lastName} - Xoá</p>
       </div>)
     }
   </div>
@@ -44,6 +56,10 @@ function App() {
 
   function addUser(user: UserType) {
     setUserList([...userList, user])
+  }
+
+  function removeUser(firstName: string) {
+    setUserList(userList.filter(item => item.firstName !== firstName))
   }
 
   return (
