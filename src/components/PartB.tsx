@@ -1,26 +1,10 @@
-import {ReactNode, useState} from "react";
+import PartBInput from "./PartBInput.tsx";
 
-const PartB = ({children}: {children: ReactNode}) => {
-  const [count, setCount] = useState<number>(0)
-
-  function increaseNumber() {
-    setCount((c) => c + 1)
-  }
-
-  return (
-    <div>
-      <p>{(new Date()).toLocaleString()}</p>
-      <div className="card">
-        <button onClick={increaseNumber}>
-          count is {count}
-        </button>
-        {children}
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </div>
-  )
+const PartB = () => {
+  return <div>
+    <p>Change new Title</p>
+    <PartBInput />
+  </div>
 }
 
-export default PartB;
+export default PartB
