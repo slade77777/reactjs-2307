@@ -76,11 +76,11 @@ const FormEdit = ({userEditing, editUser}: {userEditing?: UserType, editUser: (v
   )
 }
 
-const Result = ({userList, editUser}: {userList: Array<UserType>, editUser: (val: number) => void}) => {
+const Result = ({userList, editUser, removeUser}: {userList: Array<UserType>, editUser: (val: number) => void, removeUser: (val: number) => void}) => {
   return <div>
     {
       userList.map((user, index) => <div key={index}>
-        <p>Firstname: {user.firstName} - LastName: {user.lastName} - <span onClick={() => editUser(index)}>Sửa</span> - Xoá</p>
+        <p>Firstname: {user.firstName} - LastName: {user.lastName} - <span onClick={() => editUser(index)}>Sửa</span> - <span onClick={() => removeUser(index)}>Xoá</span></p>
       </div>)
     }
   </div>
@@ -94,8 +94,10 @@ function App() {
     setUserList([...userList, user])
   }
 
-  function removeUser(firstName: string) {
-    setUserList(userList.filter(item => item.firstName !== firstName))
+  function removeUser(position: number) {
+    const listUserClone = [...userList];
+    listUserClone.splice(position, 1)
+    setUserList(listUserClone)
   }
 
   function editUser(index: number) {
@@ -115,7 +117,7 @@ function App() {
   return (
     <div>
       {userEdit ? <FormEdit userEditing={userEdit} editUser={updateUser} /> : <FormAdd addUser={addUser}/>}
-      <Result userList={userList} editUser={editUser} />
+      <Result userList={userList} editUser={editUser} removeUser={removeUser}/>
     </div>
   )
 }
