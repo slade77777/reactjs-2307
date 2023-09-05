@@ -1,18 +1,83 @@
 import './App.css'
-import QuestionAndAnswer from "./components/QuestionAndAnswer.tsx";
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import axios from "axios";
 
 function App() {
-  const [questionOpening, setQuestionOpening] = useState<string>('');
+  const [userList, setUserList] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  console.log(questionOpening);
+  async function getUser() {
+    const response = await fetch('https://645644b92e41ccf16918360b.mockapi.io/user', {
+      method: 'GET',
+      headers: {
+        'Content-type': 'application/json'
+      }
+    });
+    const parsedResponse = await response.json();
+    setUserList(parsedResponse);
+  }
+
+  async function removeUser(id: number) {
+    try {
+      // start loading
+      setLoading(true);
+      await fetch(`https://645644b92e41ccf16918360b.mockapi.io/user/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-type': 'application/json'
+        }
+      });
+      // refetch data
+      getUser();
+      setLoading(false);
+      //hide loading
+    } catch (e) {
+      alert('something wrong')
+    }
+  }
+
+  async function addNewUser() {
+    try {
+      //  await fetch(`https://645644b92e41ccf16918360b.mockapi.io/user`, {
+      //   method: 'POST',
+      //    headers: {
+      //      "Content-Type": "application/json",
+      //    },
+      //   body: JSON.stringify({
+      //     name: 'fake 1',
+      //     password: 'fake password 1'
+      //   })
+      // });
+
+      await axios.post('https://645644b92e41ccf16918360b.mockapi.io/user', {
+        name: 'fake 2',
+        password: 'fake password 2'
+      })
+      // refetch data
+      getUser();
+    } catch (e) {
+      alert('something wrong')
+    }
+  }
+
+  useEffect(() => {
+    // call api to get list user
+    getUser();
+  }, [])
+
+
   return (
-    <div>
-      <QuestionAndAnswer question={'cau hoi 1'} answer={'dap an 1'} isOpen={questionOpening === 'cau hoi 1'} changeOpenQuestion={setQuestionOpening}/>
-      <QuestionAndAnswer question={'cau hoi 2'} answer={'dap an 2'} isOpen={questionOpening === 'cau hoi 2'} changeOpenQuestion={setQuestionOpening}/>
-      <QuestionAndAnswer question={'cau hoi 3'} answer={'dap an 3'} isOpen={questionOpening === 'cau hoi 3'} changeOpenQuestion={setQuestionOpening}/>
-      <QuestionAndAnswer question={'cau hoi 4'} answer={'dap an 4'} isOpen={questionOpening === 'cau hoi 4'} changeOpenQuestion={setQuestionOpening}/>
-      <QuestionAndAnswer question={'cau hoi 5'} answer={'dap an 5'} isOpen={questionOpening === 'cau hoi 5'} changeOpenQuestion={setQuestionOpening}/>
+    <div style={{ }}>
+      {/*{loading && <loading />}*/}
+      <button onClick={addNewUser}>ADD NEW</button>
+      {
+        userList.map((user, index) => <div key={index}>
+          <p>id: {user.id}</p>
+          <p>Name: {user.name}</p>
+          <p>Password: {user.password}</p>
+          <button onClick={() => removeUser(user.id)}>Delete</button>
+        </div>)
+      }
     </div>
   )
 }
