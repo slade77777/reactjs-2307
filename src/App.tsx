@@ -1,7 +1,13 @@
 import './App.css'
 import {useEffect, useState} from "react";
-import axios from "axios";
 import {api} from "./axiois-instance.ts";
+import withLoadingLogic from "./components/HOC.tsx";
+import {PartA} from "./components/PartA.tsx";
+import PartB from "./components/PartB.tsx";
+
+// combine component with HOC
+const PartAWithLoading = withLoadingLogic(PartA);
+const PartBWithLoading = withLoadingLogic(PartB);
 
 function App() {
   const [userList, setUserList] = useState([]);
@@ -48,7 +54,9 @@ function App() {
 
   return (
     <div style={{ }}>
-      {/*{loading && <loading />}*/}
+      <PartAWithLoading />
+      <PartBWithLoading />
+      {loading && <loading />}
       <button onClick={addNewUser}>ADD NEW</button>
       {
         userList.map((user, index) => <div key={index}>
