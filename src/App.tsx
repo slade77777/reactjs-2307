@@ -1,32 +1,22 @@
 import './App.css'
 import {useEffect, useState} from "react";
 import axios from "axios";
+import {api} from "./axiois-instance.ts";
 
 function App() {
   const [userList, setUserList] = useState([]);
   const [loading, setLoading] = useState(false);
 
   async function getUser() {
-    const response = await fetch('https://645644b92e41ccf16918360b.mockapi.io/user', {
-      method: 'GET',
-      headers: {
-        'Content-type': 'application/json'
-      }
-    });
-    const parsedResponse = await response.json();
-    setUserList(parsedResponse);
+    const response = await api.get('/user');
+    setUserList(response.data);
   }
 
   async function removeUser(id: number) {
     try {
       // start loading
       setLoading(true);
-      await fetch(`https://645644b92e41ccf16918360b.mockapi.io/user/${id}`, {
-        method: 'DELETE',
-        headers: {
-          'Content-type': 'application/json'
-        }
-      });
+      await api.delete(`/user/${id}`);
       // refetch data
       getUser();
       setLoading(false);
@@ -38,24 +28,14 @@ function App() {
 
   async function addNewUser() {
     try {
-      //  await fetch(`https://645644b92e41ccf16918360b.mockapi.io/user`, {
-      //   method: 'POST',
-      //    headers: {
-      //      "Content-Type": "application/json",
-      //    },
-      //   body: JSON.stringify({
-      //     name: 'fake 1',
-      //     password: 'fake password 1'
-      //   })
-      // });
-
-      await axios.post('https://645644b92e41ccf16918360b.mockapi.io/user', {
-        name: 'fake 2',
-        password: 'fake password 2'
+      const response = await api.post('/user', {
+        name: 'fake 3',
+        password: 'fake password 3'
       })
       // refetch data
       getUser();
     } catch (e) {
+      console.log(e);
       alert('something wrong')
     }
   }
