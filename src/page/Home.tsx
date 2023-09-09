@@ -1,9 +1,10 @@
-import {useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import {api} from "../axiois-instance.ts";
 import withLoadingLogic from "../components/HOC.tsx";
 import {PartA} from "../components/PartA.tsx";
 import PartB from "../components/PartB.tsx";
-import { Outlet, Link } from "react-router-dom";
+import { Outlet, Link, useNavigate } from "react-router-dom";
+import {UserContext} from "../App.tsx";
 
 // combine component with HOC
 const PartAWithLoading = withLoadingLogic(PartA);
@@ -52,11 +53,20 @@ const Home = () => {
     getUser();
   }, [])
 
+  const userContext = useContext(UserContext)
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!userContext.user) {
+      navigate('/login')
+    }
+  }, [userContext?.user])
 
   return (
     <div style={{ }}>
       {/*<PartAWithLoading />*/}
       {/*<PartBWithLoading />*/}
+      <p>Welcome , {userContext?.user}</p>
       <button onClick={addNewUser}>ADD NEW</button>
       {
         userList.map((user, index) => <Link to={`/user/${user.id}`} key={index}>
