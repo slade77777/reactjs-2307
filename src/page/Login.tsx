@@ -9,7 +9,6 @@ const UserDetail = () => {
   const navigate = useNavigate();
 
   const user = useContext(UserContext)
-  console.log(user);
 
   function login() {
     const name = nameRef.current?.value;

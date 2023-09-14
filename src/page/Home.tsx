@@ -1,15 +1,9 @@
 import {useContext, useEffect, useState} from "react";
 import {api} from "../axiois-instance.ts";
-import withLoadingLogic from "../components/HOC.tsx";
-import {PartA} from "../components/PartA.tsx";
-import PartB from "../components/PartB.tsx";
-import { Outlet, Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {UserContext} from "../App.tsx";
-
-// combine component with HOC
-const PartAWithLoading = withLoadingLogic(PartA);
-const PartBWithLoading = withLoadingLogic(PartB);
-
+import Header from "../components/Header.tsx";
+import {useCheckLogin} from "../useCheckLogin.ts";
 
 const Home = () => {
   const [userList, setUserList] = useState([]);
@@ -53,17 +47,12 @@ const Home = () => {
     getUser();
   }, [])
 
+  useCheckLogin();
   const userContext = useContext(UserContext)
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!userContext.user) {
-      navigate('/login')
-    }
-  }, [userContext?.user])
 
   return (
     <div style={{ }}>
+      <Header />
       {/*<PartAWithLoading />*/}
       {/*<PartBWithLoading />*/}
       <p>Welcome , {userContext?.user}</p>
