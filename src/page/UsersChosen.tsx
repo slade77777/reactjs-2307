@@ -1,17 +1,14 @@
-import {useContext} from "react";
-import {UsersChosenContext} from "../App.tsx";
 import {Link} from "react-router-dom";
 import Header from "../components/Header.tsx";
+import {useSelector} from "react-redux";
 
 const UsersChosen = () => {
-  const userChosenContext = useContext(UsersChosenContext)
-  const { userList } = userChosenContext
-
+  const userList = useSelector(store => store.userChosenList);
   return <div>
     <Header />
     <p>Danh sách user đã chọn: </p>
     {
-      userList.map((user, index) => <Link to={`/user/${user.id}`} key={index}>
+      userList?.value?.map((user, index) => <Link to={`/user/${user.id}`} key={index}>
         <p>Name: {user.name}</p>
         <p>Password: {user.password}</p>
       </Link>)

@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import {UserContext} from "../App.tsx";
 import Header from "../components/Header.tsx";
 import {useCheckLogin} from "../useCheckLogin.ts";
+import {useSelector} from "react-redux";
 
 const Home = () => {
   const [userList, setUserList] = useState([]);
@@ -48,21 +49,22 @@ const Home = () => {
   }, [])
 
   useCheckLogin();
-  const userContext = useContext(UserContext)
+  const userLogin = useSelector(state => state.userLogin);
+
 
   return (
     <div style={{ }}>
       <Header />
       {/*<PartAWithLoading />*/}
       {/*<PartBWithLoading />*/}
-      <p>Welcome , {userContext?.user}</p>
+      <p>Welcome , {userLogin?.name}</p>
       <button onClick={addNewUser}>ADD NEW</button>
       {
-        userList.map((user, index) => <Link to={`/user/${user.id}`} key={index}>
-          <p>id: {user.id}</p>
-          <p>Name: {user.name}</p>
-          <p>Password: {user.password}</p>
-          <button onClick={() => removeUser(user.id)}>Delete</button>
+        userList.map((user, index) => <Link to={`/user/${user?.id}`} key={index}>
+          <p>id: {user?.id}</p>
+          <p>Name: {user?.name}</p>
+          <p>Password: {user?.password}</p>
+          <button onClick={() => removeUser(user?.id)}>Delete</button>
         </Link>)
       }
     </div>

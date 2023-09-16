@@ -4,6 +4,8 @@ import {api} from "../axiois-instance.ts";
 import Header from "../components/Header.tsx";
 import {UsersChosenContext} from "../App.tsx";
 import {useCheckLogin} from "../useCheckLogin.ts";
+import {useDispatch} from "react-redux";
+import {addUserToList} from "../slices/userChosenListSlice.ts";
 
 const UserDetail = () => {
 
@@ -11,7 +13,6 @@ const UserDetail = () => {
 
   const params = useParams();
   const userId = params.userId;
-  const userContext = useContext(UsersChosenContext);
 
   useEffect(() => {
     api.get(`/user/${userId}`).then(res => {
@@ -20,8 +21,10 @@ const UserDetail = () => {
   }, [])
 
   useCheckLogin();
+  const dispatch = useDispatch();
+
   function chooseUser() {
-    userContext.setUserList([...userContext.userList, {name: user?.name, password: user?.password}]);
+    dispatch(addUserToList(user))
   }
 
   if (!user) {

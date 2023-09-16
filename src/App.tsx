@@ -7,7 +7,9 @@ import Home from "./page/Home.tsx";
 import UserDetail from "./page/UserDetail.tsx";
 import Login from "./page/Login.tsx";
 import {createContext, useState} from "react";
+import { Provider } from 'react-redux'
 import UsersChosen from "./page/UsersChosen.tsx";
+import store from "./store.ts";
 
 export const UserContext = createContext(null)
 export const UsersChosenContext = createContext([]);
@@ -32,13 +34,10 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-  const [user, setUser] = useState();
-  const [userList, setUserList] = useState([]);
-  return (<UsersChosenContext.Provider value={{userList , setUserList}}>
-      <UserContext.Provider value={{user, setUser}}>
-        <RouterProvider router={router}/>
-      </UserContext.Provider>
-    </UsersChosenContext.Provider>
+  return (
+    <Provider store={store}>
+      <RouterProvider router={router}/>
+    </Provider>
   )
 }
 

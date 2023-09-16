@@ -1,14 +1,14 @@
-import {useContext, useRef} from "react";
+import {useRef} from "react";
 import {api} from "../axiois-instance.ts";
 import {useNavigate} from "react-router-dom";
-import {UserContext} from "../App.tsx";
+import {useDispatch} from "react-redux";
+import {loginSuccess} from "../slices/userLoginSlice.ts";
 
 const UserDetail = () => {
   const nameRef = useRef(null);
   const passRef = useRef(null);
   const navigate = useNavigate();
-
-  const user = useContext(UserContext)
+  const dispatch = useDispatch();
 
   function login() {
     const name = nameRef.current?.value;
@@ -16,7 +16,8 @@ const UserDetail = () => {
     api.get(`/user?name=${name}&&password=${password}`).then(res => {
       if (res.data.length > 0) {
         //login success
-        user.setUser(name);
+        // use dispatch
+        dispatch(loginSuccess(name))
         navigate('/')
       } else {
         alert('login fail')

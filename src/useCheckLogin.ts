@@ -1,14 +1,14 @@
 import {useContext, useEffect} from "react";
-import {UserContext} from "./App.tsx";
 import {useNavigate} from "react-router-dom";
+import {useSelector} from "react-redux";
 
 export function useCheckLogin() {
-  const userContext = useContext(UserContext)
+  const userLogin = useSelector(state => state.userLogin);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!userContext.user) {
+    if (!userLogin?.name) {
       navigate('/login')
     }
-  }, [userContext?.user])
+  }, [userLogin?.name])
 }
