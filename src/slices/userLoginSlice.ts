@@ -13,9 +13,13 @@ export const userLoginSlice = createSlice({
     name: '',
     password: '',
     id: '',
-    isLoginSuccess: false
+    isLoginSuccess: false,
+    loading: false
   },
   reducers: {
+    showLoading:(state) => {
+      state.loading = true
+    },
     loginSuccess: (state, action) => {
       state.name = action.payload.name;
       state.password = action.payload.password;
@@ -33,6 +37,7 @@ export const userLoginSlice = createSlice({
       } else {
         state.isLoginSuccess = false
       }
+      state.loading = false
     })
   }
 })
