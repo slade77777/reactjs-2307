@@ -3,7 +3,6 @@ import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {login} from "../slices/userLoginSlice.ts";
 import styled from "styled-components";
-import reactImage from "../assets/react.svg";
 
 const UserDetail = () => {
   const nameRef = useRef(null);
@@ -16,6 +15,7 @@ const UserDetail = () => {
     const name = nameRef.current?.value;
     const password = passRef.current?.value;
     try {
+      // @ts-ignore
       await dispatch(login({name, password})).unwrap();
     } catch (e) {
       console.log(e)
@@ -34,10 +34,10 @@ const UserDetail = () => {
 
   return <div>
     <p className="text-lime-600 text-3xl">Name:</p>
-    <StyledInput type='text' ref={nameRef}/>
+    <input type='text' ref={nameRef}/>
     <div/>
-    <StyledSmallLabel>Password</StyledSmallLabel>
-    <StyledInput type='text' ref={passRef} color={'blue'} />
+    <p>Password</p>
+    <input type='text' ref={passRef} color={'blue'} />
     <div>
       <button onClick={loginClick}>Login</button>
     </div>
