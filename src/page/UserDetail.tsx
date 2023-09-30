@@ -1,15 +1,14 @@
-import {useContext, useEffect, useState} from "react";
-import {useLoaderData, useParams} from "react-router-dom";
+import {useEffect, useState} from "react";
+import {useParams} from "react-router-dom";
 import {api} from "../axiois-instance.ts";
 import Header from "../components/Header.tsx";
-import {UsersChosenContext} from "../App.tsx";
 import {useCheckLogin} from "../useCheckLogin.ts";
 import {useDispatch} from "react-redux";
 import {addUserToList} from "../slices/userChosenListSlice.ts";
 
 const UserDetail = () => {
 
-  const [user, setUser] = useState();
+  const [user, setUser] = useState<any>();
 
   const params = useParams();
   const userId = params.userId;

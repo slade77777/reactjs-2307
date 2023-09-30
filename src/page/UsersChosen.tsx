@@ -3,7 +3,7 @@ import Header from "../components/Header.tsx";
 import {useSelector} from "react-redux";
 
 const UsersChosen = () => {
-  const userList = useSelector(store => store.userChosenList);
+  const userList = useSelector((store: any) => store.userChosenList);
   return <div>
     <Header />
     <p>Danh sách user đã chọn: </p>
